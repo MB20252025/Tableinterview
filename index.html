@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Detective Interview</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #111;
+        font-family: Arial, sans-serif;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* YOUR PICTURE */
+    .interview-room {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+
+        background-image: url("your-picture.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Darkens the photo slightly so the questions are easier to see */
+    .dark-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Interview question box */
+    .question-box {
+        position: absolute;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+
+        width: min(850px, 90%);
+
+        background: rgba(15, 15, 15, 0.94);
+        border: 2px solid #555;
+        border-radius: 10px;
+
+        padding: 25px 30px;
+
+        box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    }
+
+    .speaker {
+        color: #d6d6d6;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .question {
+        font-size: 25px;
+        line-height: 1.4;
+        margin-bottom: 22px;
+    }
+
+    /* Answer buttons */
+    .answers {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .answer {
+        background: #292929;
+        color: white;
+
+        border: 1px solid #666;
+        border-radius: 6px;
+
+        padding: 14px 18px;
+
+        text-align: left;
+        font-size: 17px;
+
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .answer:hover {
+        background: #444;
+        border-color: white;
+        transform: translateX(3px);
+    }
+
+    /* Small case information */
+    .case-info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+
+        background: rgba(0,0,0,0.8);
+        padding: 12px 16px;
+
+        border-left: 4px solid #b30000;
+
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    /* Question number */
+    .question-number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+
+        background: rgba(0,0,0,0.8);
+        padding: 10px 15px;
+
+        font-size: 14px;
+    }
+
+    /* Message shown after choosing an answer */
+    .result {
+        display: none;
+
+        margin-top: 15px;
+        padding: 12px;
+
+        background: #151515;
+        border-left: 3px solid #aaa;
+
+        color: #ddd;
+    }
+
+    @media (max-width: 600px) {
+
+        .question-box {
+            bottom: 15px;
+            padding: 18px;
+        }
+
+        .question {
+            font-size: 20px;
+        }
+
+        .answer {
+            font-size: 15px;
+            padding: 12px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="interview-room">
+
+    <!-- Darkens the background photograph -->
+    <div class="dark-overlay"></div>
+
+    <!-- Case information -->
+    <div class="case-info">
+        CASE FILE: 007<br>
+        INTERVIEW ROOM
+    </div>
+
+    <!-- Question number -->
+    <div class="question-number" id="questionNumber">
+        QUESTION 1 / 5
+    </div>
+
+    <!-- Questions -->
+    <div class="question-box">
+
+        <div class="speaker">
+            DETECTIVE
+        </div>
+
+        <div class="question" id="question">
+            Where were you on the night of the robbery?
+        </div>
+
+        <div class="answers" id="answers">
+
+            <button class="answer"
+                onclick="answer(0)">
+                I was at home.
+            </button>
+
+            <button class="answer"
+                onclick="answer(1)">
+                I was working late.
+            </button>
+
+            <button class="answer"
+                onclick="answer(2)">
+                I don't remember.
+            </button>
+
+        </div>
+
+        <div class="result" id="result"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+    {
+        question: "Where were you on the night of the robbery?",
+
+        answers: [
+            "I was at home.",
+            "I was working late.",
+            "I don't remember."
+        ],
+
+        results: [
+            "Interesting. Can anyone confirm that?",
+            "You worked until midnight?",
+            "You don't remember?"
+        ]
+    },
+
+    {
+        question: "Did you know the victim?",
+
+        answers: [
+            "Yes. We worked together.",
+            "No, I barely knew them.",
+            "I'd rather not answer."
+        ],
+
+        results: [
+            "So you knew them.",
+            "That's not what the evidence suggests.",
+            "Why don't you want to answer?"
+        ]
+    },
+
+    {
+        question: "Why was your key found at the scene?",
+
+        answers: [
+            "Someone must have taken it.",
+            "I lost it earlier.",
+            "That isn't my key."
+        ],
+
+        results: [
+            "Convenient.",
+            "When did you lose it?",
+            "The evidence says otherwise."
+        ]
+    },
+
+    {
+        question: "Did you enter the building that night?",
+
+        answers: [
+            "No.",
+            "Yes, but only briefly.",
+            "I can't remember."
+        ],
+
+        results: [
+            "We have evidence placing you inside.",
+            "What were you doing there?",
+            "Again with the memory problems."
+        ]
+    },
+
+    {
+        question: "Are you telling me the truth?",
+
+        answers: [
+            "Yes.",
+            "Absolutely.",
+            "I want a lawyer."
+        ],
+
+        results: [
+            "Then your story should hold up.",
+            "We'll see about that.",
+            "The interview is suspended."
+        ]
+    }
+
+];
+
+let currentQuestion = 0;
+
+function loadQuestion() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("question").textContent = q.question;
+
+    document.getElementById("questionNumber").textContent =
+        "QUESTION " + (currentQuestion + 1) +
+        " / " + questions.length;
+
+    const answersDiv = document.getElementById("answers");
+
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach((answerText, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+
+        button.textContent = answerText;
+
+        button.onclick = function() {
+            answer(index);
+        };
+
+        answersDiv.appendChild(button);
+
+    });
+
+    document.getElementById("result").style.display = "none";
+}
+
+function answer(index) {
+
+    const q = questions[currentQuestion];
+
+    const result = document.getElementById("result");
+
+    result.textContent = q.results[index];
+
+    result.style.display = "block";
+
+    setTimeout(() => {
+
+        if (currentQuestion < questions.length - 1) {
+
+            currentQuestion++;
+
+            loadQuestion();
+
+        } else {
+
+            document.getElementById("question").textContent =
+                "The interview is over.";
+
+            document.getElementById("answers").innerHTML = "";
+
+            document.getElementById("questionNumber").textContent =
+                "INTERVIEW COMPLETE";
+
+        }
+
+    }, 1800);
+}
+
+</script>
+
+</body>
+</html>
