@@ -7,364 +7,760 @@
 <title>Detective Interview</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
 
-    body {
-        margin: 0;
-        background: #111;
-        font-family: Arial, sans-serif;
-        color: white;
-        height: 100vh;
-        overflow: hidden;
-    }
+/* ==============================
+   BASIC PAGE
+============================== */
 
-    /* YOUR PICTURE */
-    .interview-room {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
+* {
+    box-sizing: border-box;
+}
 
-        background-image: url("interviewroom.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
+html,
+body {
+    margin: 0;
+    padding: 0;
 
-    /* Darkens the photo slightly so the questions are easier to see */
-    .dark-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.25);
-    }
+    width: 100%;
+    height: 100%;
 
-    /* Interview question box */
+    overflow: hidden;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #111;
+    color: white;
+}
+
+
+/* ==============================
+   INTERVIEW ROOM / YOUR PHOTO
+============================== */
+
+.interview-room {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    /*
+       YOUR PHOTO
+
+       interviewroom.jpg must be
+       in the same folder as index.html
+    */
+
+    background-image: url("./interviewroom.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+
+/* ==============================
+   DARK OVERLAY
+============================== */
+
+.dark-overlay {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* ==============================
+   CASE FILE INFORMATION
+============================== */
+
+.case-info {
+
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    padding: 12px 16px;
+
+    border-left: 4px solid #b30000;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    letter-spacing: 1px;
+
+    z-index: 10;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+
+/* ==============================
+   QUESTION NUMBER
+============================== */
+
+.question-number {
+
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    padding: 10px 15px;
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+
+    z-index: 10;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+
+/* ==============================
+   QUESTION BOX
+============================== */
+
+.question-box {
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 40px;
+
+    transform: translateX(-50%);
+
+    width: min(850px, 90%);
+
+    background: rgba(15, 15, 15, 0.94);
+
+    border: 2px solid #555;
+
+    border-radius: 10px;
+
+    padding: 25px 30px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.8),
+        0 0 20px rgba(0,0,0,0.4);
+
+    z-index: 10;
+}
+
+
+/* ==============================
+   SPEAKER
+============================== */
+
+.speaker {
+
+    color: #cfcfcf;
+
+    font-size: 14px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 10px;
+}
+
+
+/* ==============================
+   QUESTION
+============================== */
+
+.question {
+
+    font-size: 25px;
+
+    line-height: 1.4;
+
+    margin-bottom: 22px;
+
+    color: #ffffff;
+}
+
+
+/* ==============================
+   ANSWERS
+============================== */
+
+.answers {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* ==============================
+   ANSWER BUTTON
+============================== */
+
+.answer {
+
+    width: 100%;
+
+    background: #292929;
+
+    color: white;
+
+    border: 1px solid #666;
+
+    border-radius: 6px;
+
+    padding: 14px 18px;
+
+    text-align: left;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        border 0.2s,
+        transform 0.2s;
+}
+
+
+/* Mouse over answer */
+
+.answer:hover {
+
+    background: #444;
+
+    border-color: #ffffff;
+
+    transform: translateX(4px);
+}
+
+
+/* ==============================
+   RESULT / DETECTIVE RESPONSE
+============================== */
+
+.result {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 12px 15px;
+
+    background: #151515;
+
+    border-left: 3px solid #aaa;
+
+    color: #ddd;
+
+    line-height: 1.4;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 600px) {
+
     .question-box {
-        position: absolute;
-        left: 50%;
-        bottom: 40px;
-        transform: translateX(-50%);
 
-        width: min(850px, 90%);
+        bottom: 15px;
 
-        background: rgba(15, 15, 15, 0.94);
-        border: 2px solid #555;
-        border-radius: 10px;
+        width: 94%;
 
-        padding: 25px 30px;
-
-        box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-    }
-
-    .speaker {
-        color: #d6d6d6;
-        font-size: 15px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 10px;
+        padding: 18px;
     }
 
     .question {
-        font-size: 25px;
-        line-height: 1.4;
-        margin-bottom: 22px;
-    }
 
-    /* Answer buttons */
-    .answers {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        font-size: 20px;
     }
 
     .answer {
-        background: #292929;
-        color: white;
 
-        border: 1px solid #666;
-        border-radius: 6px;
+        font-size: 15px;
 
-        padding: 14px 18px;
-
-        text-align: left;
-        font-size: 17px;
-
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    .answer:hover {
-        background: #444;
-        border-color: white;
-        transform: translateX(3px);
-    }
-
-    /* Small case information */
-    .case-info {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-
-        background: rgba(0,0,0,0.8);
-        padding: 12px 16px;
-
-        border-left: 4px solid #b30000;
-
-        font-size: 14px;
-        letter-spacing: 1px;
-    }
-
-    /* Question number */
-    .question-number {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-
-        background: rgba(0,0,0,0.8);
-        padding: 10px 15px;
-
-        font-size: 14px;
-    }
-
-    /* Message shown after choosing an answer */
-    .result {
-        display: none;
-
-        margin-top: 15px;
         padding: 12px;
-
-        background: #151515;
-        border-left: 3px solid #aaa;
-
-        color: #ddd;
     }
 
-    @media (max-width: 600px) {
+    .case-info {
 
-        .question-box {
-            bottom: 15px;
-            padding: 18px;
-        }
+        top: 10px;
+        left: 10px;
 
-        .question {
-            font-size: 20px;
-        }
+        font-size: 11px;
 
-        .answer {
-            font-size: 15px;
-            padding: 12px;
-        }
+        padding: 8px 10px;
     }
+
+    .question-number {
+
+        top: 10px;
+        right: 10px;
+
+        font-size: 11px;
+
+        padding: 8px 10px;
+    }
+}
+
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =====================================
+     INTERVIEW ROOM
+====================================== -->
 
 <div class="interview-room">
 
-    <!-- Darkens the background photograph -->
+
+    <!-- Darkens the photograph -->
+
     <div class="dark-overlay"></div>
 
-    <!-- Case information -->
+
+    <!-- =================================
+         CASE INFORMATION
+    ================================== -->
+
     <div class="case-info">
+
         CASE FILE: 007<br>
+
         INTERVIEW ROOM
+
     </div>
 
-    <!-- Question number -->
-    <div class="question-number" id="questionNumber">
+
+    <!-- =================================
+         QUESTION NUMBER
+    ================================== -->
+
+    <div
+        class="question-number"
+        id="questionNumber"
+    >
+
         QUESTION 1 / 5
+
     </div>
 
-    <!-- Questions -->
+
+    <!-- =================================
+         INTERVIEW QUESTION BOX
+    ================================== -->
+
     <div class="question-box">
 
+
+        <!-- Speaker -->
+
         <div class="speaker">
+
             DETECTIVE
+
         </div>
 
-        <div class="question" id="question">
+
+        <!-- Question -->
+
+        <div
+            class="question"
+            id="question"
+        >
+
             Where were you on the night of the robbery?
+
         </div>
 
-        <div class="answers" id="answers">
 
-            <button class="answer"
-                onclick="answer(0)">
+        <!-- Answer buttons -->
+
+        <div
+            class="answers"
+            id="answers"
+        >
+
+            <button
+                class="answer"
+                onclick="answer(0)"
+            >
+
                 I was at home.
+
             </button>
 
-            <button class="answer"
-                onclick="answer(1)">
+
+            <button
+                class="answer"
+                onclick="answer(1)"
+            >
+
                 I was working late.
+
             </button>
 
-            <button class="answer"
-                onclick="answer(2)">
+
+            <button
+                class="answer"
+                onclick="answer(2)"
+            >
+
                 I don't remember.
+
             </button>
 
         </div>
 
-        <div class="result" id="result"></div>
+
+        <!-- Detective response -->
+
+        <div
+            class="result"
+            id="result"
+        ></div>
+
 
     </div>
+
 
 </div>
 
+
+
 <script>
+
+/* =========================================
+   INTERVIEW QUESTIONS
+========================================= */
 
 const questions = [
 
     {
-        question: "Where were you on the night of the robbery?",
+        question:
+            "Where were you on the night of the robbery?",
 
         answers: [
+
             "I was at home.",
+
             "I was working late.",
+
             "I don't remember."
+
         ],
 
         results: [
+
             "Interesting. Can anyone confirm that?",
+
             "You worked until midnight?",
+
             "You don't remember?"
+
         ]
     },
 
+
     {
-        question: "Did you know the victim?",
+        question:
+            "Did you know the victim?",
 
         answers: [
+
             "Yes. We worked together.",
+
             "No, I barely knew them.",
+
             "I'd rather not answer."
+
         ],
 
         results: [
+
             "So you knew them.",
+
             "That's not what the evidence suggests.",
+
             "Why don't you want to answer?"
+
         ]
     },
 
+
     {
-        question: "Why was your key found at the scene?",
+        question:
+            "Why was your key found at the scene?",
 
         answers: [
+
             "Someone must have taken it.",
+
             "I lost it earlier.",
+
             "That isn't my key."
+
         ],
 
         results: [
+
             "Convenient.",
+
             "When did you lose it?",
+
             "The evidence says otherwise."
+
         ]
     },
 
+
     {
-        question: "Did you enter the building that night?",
+        question:
+            "Did you enter the building that night?",
 
         answers: [
+
             "No.",
+
             "Yes, but only briefly.",
+
             "I can't remember."
+
         ],
 
         results: [
+
             "We have evidence placing you inside.",
+
             "What were you doing there?",
+
             "Again with the memory problems."
+
         ]
     },
 
+
     {
-        question: "Are you telling me the truth?",
+        question:
+            "Are you telling me the truth?",
 
         answers: [
+
             "Yes.",
+
             "Absolutely.",
+
             "I want a lawyer."
+
         ],
 
         results: [
+
             "Then your story should hold up.",
+
             "We'll see about that.",
+
             "The interview is suspended."
+
         ]
     }
 
 ];
 
+
+/* =========================================
+   CURRENT QUESTION
+========================================= */
+
 let currentQuestion = 0;
+
+
+/* =========================================
+   LOAD QUESTION
+========================================= */
 
 function loadQuestion() {
 
     const q = questions[currentQuestion];
 
-    document.getElementById("question").textContent = q.question;
+
+    /*
+       Change question text
+    */
+
+    document.getElementById("question").textContent =
+        q.question;
+
+
+    /*
+       Update question number
+    */
 
     document.getElementById("questionNumber").textContent =
-        "QUESTION " + (currentQuestion + 1) +
-        " / " + questions.length;
+        "QUESTION " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
 
-    const answersDiv = document.getElementById("answers");
+
+    /*
+       Get answer container
+    */
+
+    const answersDiv =
+        document.getElementById("answers");
+
+
+    /*
+       Remove previous answers
+    */
 
     answersDiv.innerHTML = "";
 
-    q.answers.forEach((answerText, index) => {
 
-        const button = document.createElement("button");
+    /*
+       Create new answer buttons
+    */
+
+    q.answers.forEach(function(answerText, index) {
+
+        const button =
+            document.createElement("button");
+
 
         button.className = "answer";
 
-        button.textContent = answerText;
 
-        button.onclick = function() {
-            answer(index);
-        };
+        button.textContent =
+            answerText;
+
+
+        button.onclick =
+            function() {
+
+                answer(index);
+
+            };
+
 
         answersDiv.appendChild(button);
 
     });
 
-    document.getElementById("result").style.display = "none";
+
+    /*
+       Hide previous response
+    */
+
+    document.getElementById("result").style.display =
+        "none";
 }
+
+
+
+/* =========================================
+   ANSWER SELECTED
+========================================= */
 
 function answer(index) {
 
-    const q = questions[currentQuestion];
+    const q =
+        questions[currentQuestion];
 
-    const result = document.getElementById("result");
 
-    result.textContent = q.results[index];
+    const result =
+        document.getElementById("result");
 
-    result.style.display = "block";
 
-    setTimeout(() => {
+    /*
+       Show detective's response
+    */
 
-        if (currentQuestion < questions.length - 1) {
+    result.textContent =
+        q.results[index];
+
+
+    result.style.display =
+        "block";
+
+
+    /*
+       Wait before moving
+       to the next question
+    */
+
+    setTimeout(function() {
+
+
+        /*
+           More questions remain
+        */
+
+        if (
+            currentQuestion <
+            questions.length - 1
+        ) {
 
             currentQuestion++;
 
             loadQuestion();
 
-        } else {
+        }
+
+
+        /*
+           Interview finished
+        */
+
+        else {
 
             document.getElementById("question").textContent =
                 "The interview is over.";
 
-            document.getElementById("answers").innerHTML = "";
+
+            document.getElementById("answers").innerHTML =
+                "";
+
 
             document.getElementById("questionNumber").textContent =
                 "INTERVIEW COMPLETE";
 
+
+            document.getElementById("result").style.display =
+                "none";
+
         }
 
     }, 1800);
+
 }
 
 </script>
